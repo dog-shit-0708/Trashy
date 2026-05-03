@@ -1,0 +1,536 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'KangKang', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@font-face {
+  font-family: 'KangKang';
+  src: url('/素材集市康康体3.0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  color: #333;
+  overflow: hidden;
+  user-select: none;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('/下载 (2).jpg') center/cover no-repeat;
+  z-index: -2;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  z-index: -1;
+}
+
+.app {
+  padding: 20px;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin: -20px -20px 16px -20px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: move;
+}
+
+.drag-handle {
+  display: flex;
+  align-items: center;
+  -webkit-app-region: drag;
+  width: 60px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.drag-handle:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.drag-dots {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  -webkit-app-region: drag;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.title:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.window-controls {
+  display: flex;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+
+.minimize-btn,
+.close-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+  line-height: 32px;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.minimize-btn:focus,
+.close-btn:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.minimize-btn:hover,
+.close-btn:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+
+
+button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* 输入区域 */
+.input-section {
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.text-input::placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.text-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+.text-input:focus {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.button-group button {
+  margin-top: 0;
+  flex: 1;
+}
+
+/* 列表区域 */
+.items-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 4px;
+  min-height: 0;
+}
+
+.items-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.items-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.items-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.item-card {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  text-align: left;
+  height: 120px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.item-content {
+  margin-bottom: 8px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-content::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+.item-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.item-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 1px;
+}
+
+.text-content {
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: break-all;
+  color: #333;
+}
+
+.image-content {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  display: block;
+  object-fit: contain;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.item-time {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.delete-btn {
+  margin-top: 0;
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.item-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.item-actions .copy-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+  line-height: 24px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.item-actions .copy-btn:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* 详情弹窗 */
+.detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.detail-content {
+  border-radius: 16px;
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.detail-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/下载 (5).jpg') center/cover no-repeat;
+  z-index: 0;
+}
+
+.detail-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1;
+}
+
+.detail-content > * {
+  position: relative;
+  z-index: 2;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.detail-header h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+}
+
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-actions .copy-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+  line-height: 32px;
+  border: none !important;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.detail-actions .copy-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.detail-close {
+  width: 32px;
+  height: 32px;
+  border: none !important;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.detail-body {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  min-height: 0;
+}
+
+.detail-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333;
+  white-space: pre;
+  word-break: normal;
+  min-width: fit-content;
+}
+
+.detail-image {
+  max-width: none;
+  border-radius: 8px;
+  display: block;
+}
+
+.detail-footer {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
+  text-align: right;
+}
+
+.detail-body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.detail-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.detail-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.detail-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* 删除确认弹窗 */
+.confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.confirm-content {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  min-width: 240px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-text {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-btn {
+  margin: 0;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirm-btn.cancel {
+  background: rgba(255, 255, 255, 0.5);
+  color: #666;
+}
+
+.confirm-btn.cancel:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.confirm-btn.confirm {
+  background: rgba(255, 100, 100, 0.6);
+  color: #fff;
+}
+
+.confirm-btn.confirm:hover {
+  background: rgba(255, 100, 100, 0.8);
+}

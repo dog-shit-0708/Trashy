@@ -1,0 +1,5 @@
+export type { IStorage } from './IStorage'
+export { JsonStorage } from './JsonStorage'
+export { TrashRepository } from './TrashRepository'
+export type { TrashItem } from './types'
+export { loadConfig, saveConfig } from './config'
