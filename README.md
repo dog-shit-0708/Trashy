@@ -6,7 +6,7 @@
 
 - **临时存储** — 文本和图片存进去，24 小时自动清掉
 - **桌宠猫猫** — 一个独立窗口的透明底小猫，会 idle / waking / pooping / sleeping
-- **帧序列动画** — PNG 帧序列驱动，不是 GIF，不吃解码性能
+- **GIF 动画桌宠** — 透明底小猫，会 idle / waking / pooping / sleeping
 
 ## 技术栈
 
@@ -21,9 +21,9 @@ npm run dev
 
 ## 桌宠动画
 
-桌宠帧序列放在 `public/cat/frames/{state}/{001..012}.png`，共 12 帧每状态。
+GIF 动画驱动，放在 `public/GIF/` 下。
 
-通过 CSS `mix-blend-mode: multiply` 实现透明背景，不是传统 colorkey。
+通过初次渲染时视频 colorkey 去背实现透明效果，后面换成逐帧序列走 CSS `mix-blend-mode: multiply`。没换完，先用 GIF 跑着。
 
 ## 项目结构
 
