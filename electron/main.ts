@@ -1,5 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, Tray, screen } from 'electron'
 import path from 'node:path'
+import { autoUpdater } from 'electron-updater'
 import { JsonStorage, TrashRepository, type TrashItem, loadConfig, saveConfig } from './store'
 import { TtlService } from './ttl'
 
@@ -60,6 +61,9 @@ const createTray = () => {
 
   const contextMenu = Menu.buildFromTemplate([
     { label: '显示', click: () => win?.show() },
+    { type: 'separator' },
+    { label: '检查更新', click: () => autoUpdater.checkForUpdates() },
+    { type: 'separator' },
     {
       label: '退出',
       click: () => {
@@ -185,6 +189,12 @@ const registerIpcHandlers = () => {
     win?.minimize()
   })
 
+  // 手动检查更新
+  ipcMain.handle('app:checkUpdate', async () => {
+    autoUpdater.checkForUpdates()
+    return { checked: true }
+  })
+
   ipcMain.on('pet:toggleMainWindow', () => {
     if (win?.isVisible()) {
       win.hide()
@@ -221,6 +231,9 @@ app.whenReady().then(async () => {
   createTray()
   registerIpcHandlers()
   ttl.startTTL()
+
+  // 启动时检查更新（非阻塞，只后台检查）
+  autoUpdater.checkForUpdatesAndNotify()
 })
 
 app.on('window-all-closed', () => {
@@ -233,6 +246,57 @@ app.on('before-quit', () => {
   if (petWin && !petWin.isDestroyed()) {
     petWin.close()
   }
+})
+
+// ====== 自动更新 ======
+autoUpdater.autoDownload = false
+autoUpdater.autoInstallOnAppQuit = true
+
+autoUpdater.on('checking-for-update', () => {
+  console.log('[AutoUpdater] 正在检查更新...')
+})
+
+autoUpdater.on('update-available', (info) => {
+  dialog.showMessageBox({
+    type: 'info',
+    title: '发现新版本',
+    message: `有新版本 ${info.version} 可用，是否下载？`,
+    buttons: ['下载', '取消'],
+  }).then(({ response }) => {
+    if (response === 0) {
+      autoUpdater.downloadUpdate()
+    }
+  })
+})
+
+autoUpdater.on('update-not-available', () => {
+  dialog.showMessageBox({
+    type: 'info',
+    title: '已是最新',
+    message: '当前已是最新版本。',
+  })
+})
+
+autoUpdater.on('download-progress', (progress) => {
+  console.log(`[AutoUpdater] 下载中: ${Math.round(progress.percent)}%`)
+})
+
+autoUpdater.on('update-downloaded', () => {
+  dialog.showMessageBox({
+    type: 'info',
+    title: '下载完成',
+    message: '更新已下载，是否立即重启安装？',
+    buttons: ['重启', '稍后'],
+  }).then(({ response }) => {
+    if (response === 0) {
+      isQuitting = true
+      autoUpdater.quitAndInstall()
+    }
+  })
+})
+
+autoUpdater.on('error', (err) => {
+  console.error('[AutoUpdater] 错误:', err)
 })
 
 app.on('activate', () => {

@@ -17,6 +17,42 @@
   ],
   "author": "",
   "license": "ISC",
+  "build": {
+    "appId": "com.trashy.app",
+    "productName": "Trashy",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "public",
+        "to": "public",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "public/11 (1311).png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "dog-shit-0708",
+      "repo": "Trashy"
+    }
+  },
   "config": {
     "electron_mirror": "https://cdn.npmmirror.com/binaries/electron/"
   },
@@ -33,6 +69,7 @@
   },
   "dependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.60.2",
+    "electron-updater": "^6.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
